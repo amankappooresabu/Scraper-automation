@@ -7,7 +7,7 @@ class BayutSpider(scrapy.Spider):
     allowed_domains = ['bayut.bh']
     start_urls = ['https://www.bayut.bh/en/to-rent/commercial/bahrain/']
     item_count = 0
-    max_items = 50
+    max_items = 1050
 
     def parse(self, response):
         property_urls = response.xpath('//a[@aria-label="Listing link"]/@href').getall()
@@ -46,7 +46,7 @@ class BayutSpider(scrapy.Spider):
             'amenities': ','.join(response.xpath('//span[@class="c0327f5b"]/text()').getall()),
             'details': response.xpath('//span[@aria-label="Area"]//span/text()').get(),
             'agent_name': response.xpath('//span[@aria-label="Agent name"]/text()').get(),
-            'number_of_photos': len(response.xpath('//div[@aria-label="Gallery dialog photo grid"]//source[@type="image/webp"]/@srcset').getall()),
+            'number_of_photos': str(len(response.xpath('//div[@aria-label="Gallery dialog photo grid"]//source[@type="image/webp"]/@srcset').getall())),
             'breadcrumb': ' > '.join([response.xpath('normalize-space(//div[@aria-label="Breadcrumb"]/div/text())').get()] + response.xpath('//div[@aria-label="Breadcrumb"]//span[@aria-label="Link name"]/text()').getall()),
             'property_image_urls': response.xpath('//div[@aria-label="Gallery dialog photo grid"]//source[@type="image/webp"]/@srcset').getall(),
             'property_type': response.xpath('//span[@aria-label="Type"]/text()').get(), 
